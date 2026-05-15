@@ -46,18 +46,18 @@
       </ul>
       <div class="add-form">
         <input
-          type="text"
+          type="text" id="add-form-name"
           class="add-form-name"
           placeholder="Введите ваше имя"
         />
         <textarea
-          type="textarea"
+          type="textarea" id="add-form-text"
           class="add-form-text"
           placeholder="Введите ваш коментарий"
           rows="4"
         ></textarea>
         <div class="add-form-row">
-          <button class="add-form-button">Написать</button>
+          <button id="add-form-button" class="add-form-button">Написать</button>
         </div>
       </div>
     </div>
@@ -66,6 +66,15 @@
   <script>
     "use strict";
     // Код писать здесь
+    const input1 = document.getElementById('add-form-name');
+   input1.addEventListener('input1', () => {
+  console.log('Введено: ' + input1.value);
+});
+    const input2 = document.getElementById('add-form-text');
+   input2.addEventListener('input2', () => {
+  console.log('Введено: ' + input2.value);
+});
+
     console.log("It works!");
   </script>
 </html>
