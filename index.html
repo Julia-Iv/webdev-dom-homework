@@ -8,7 +8,7 @@
 
   <body>
     <div class="container">
-      <ul class="comments">
+      <ul class="comments" id="comments">
         <li class="comment">
           <div class="comment-header">
             <div>Глеб Фокин</div>
@@ -29,7 +29,7 @@
         <li class="comment">
           <div class="comment-header">
             <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
+            <div class="data">13.02.22 19:22</div>
           </div>
           <div class="comment-body">
             <div class="comment-text">
@@ -66,14 +66,54 @@
   <script>
     "use strict";
     // Код писать здесь
-    const input1 = document.getElementById('add-form-name');
-   input1.addEventListener('input1', () => {
-  console.log('Введено: ' + input1.value);
-});
-    const input2 = document.getElementById('add-form-text');
-   input2.addEventListener('input2', () => {
-  console.log('Введено: ' + input2.value);
-});
+    const addName = document.getElementById('add-form-name');
+    const addText = document.getElementById('add-form-text');
+    const buttonForm = document.getElementById('add-form-button');
+    const addComments = document.getElementById('comments');
+
+    addName.addEventListener('input', (event) =>  {
+      console.log('Изменить имя:', event.target.value );
+    });
+    addText.addEventListener('input', (event) =>  {
+      console.log('Изменить комментарии:', event.target.value );
+    });
+
+    buttonForm.addEventListener('click', () => {
+      const nameValue = addName.value.trim();
+      const textValue = addText.value.trim();
+      if (nameValue === '' || textValue === '') {
+        alert(' Пожалуйста, заполните поля!');
+        return;
+      }
+      console.log("click");
+
+    //формирование даты и времени
+    const now =new Date();
+    const dateOptions = { day: '2-digit', month: '2-digit', year: '2-digit' };
+    const timeOptions = { hour: '2-digit', minute: '2-digit' };
+    const currentDate = now.toLocaleDateString('ru-RU', dateOptions);
+    const currentTime = now.toLocaleTimeString('ru-RU', timeOptions);
+    const currentDateTime = `${currentDate} ${currentTime}`;
+
+    //сoздание шаблонной строки
+    const newComments = `
+    <div class="comment">
+      <h4 class="comment-header">${nameValue}<span>           ${currentDateTime}</span></h4>
+      <p class="comment-text">${textValue}</p>
+      <div class="comment-footer"
+      <div class="likes">
+      <div class="likes-counter">0</div>
+      <button class="like-button -active-like"></button></div>
+    </div> 
+    </div> `
+;
+    //новый комментарий в конец контейнера
+    addComments.innerHTML = addComments.innerHTML + newComments;
+   //addComments.insertAdjacentHTML('beforeend', newComments);
+   addName.value = '';
+   addText.value = '';
+    });
+  
 
     console.log("It works!");
   </script>
