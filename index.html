@@ -9,7 +9,7 @@
   <body>
     <div class="container">
       <ul class="comments" id="comments">
-        <li class="comment">
+     <li class="comment"> 
           <div class="comment-header">
             <div>Глеб Фокин</div>
             <div>12.02.22 12:18</div>
@@ -26,7 +26,7 @@
             </div>
           </div>
         </li>
-        <li class="comment">
+        <li class="comment"> 
           <div class="comment-header">
             <div>Варвара Н.</div>
             <div class="data">13.02.22 19:22</div>
@@ -61,10 +61,22 @@
         </div>
       </div>
     </div>
-  <div id = comments-container></div>
   <script>
     "use strict";
     // Код писать здесь
+  const comments = [
+  { name: "Глеб Фокин",
+    text: "Это будет первый комментарий на этой странице",
+    likesCount: 3,
+    isLiked: false
+   },
+  { name: " Варвара Н.",
+    text: "Мне нравится как оформлена эта страница",
+    likesCount: 75,
+    isLiked: true
+   }
+];
+
     const addName = document.getElementById('add-form-name');
     const addText = document.getElementById('add-form-text');
     const buttonForm = document.getElementById('add-form-button');
@@ -76,6 +88,16 @@
     addText.addEventListener('input', (event) =>  {
       console.log('Изменить комментарии:', event.target.value );
     });
+/* 
+// Добавляем созданный объект в массив комментариев
+  const addNewComment1 = comments.push(addNewComment);
+  //новый комментарий в конец нового контейнера
+    addComments.innerHTML = addComments.innerHTML + addNewComment1;
+   //addComments.insertAdjacentHTML('beforeend', newComments);
+   addName.value = '';
+   addText.value = '';
+    ;
+  */
 
     buttonForm.addEventListener('click', () => {
       const nameValue = addName.value.trim();
@@ -99,54 +121,67 @@
     <div class="comment">
       <h4 class="comment-header">${nameValue}<span>           ${currentDateTime}</span></h4>
       <p class="comment-text">${textValue}</p>
-      <div class="comment-footer"
+      <div class="comment-footer">
       <div class="likes">
       <div class="likes-counter">0</div>
       <button class="like-button -active-like"></button></div>
     </div> 
     </div> `
-;
+  
     //новый комментарий в конец контейнера
     addComments.innerHTML = addComments.innerHTML + newComments;
+    addName.value = '';
+    addText.value = '';
+});
+  
+    const addNewComment = {
+    name: addName.value,
+    text: addText.value,
+    likesCount: 0,      // Начальное количество лайков
+    isLiked: false      // Изначально лайк не поставлен
+  };
+
+  // Добавляем созданный объект в массив комментариев
+  const addNewComment1 = comments.push(addNewComment);
+  //новый комментарий в конец нового контейнера
+    addComments.innerHTML = addComments.innerHTML + addNewComment1;
    //addComments.insertAdjacentHTML('beforeend', newComments);
    addName.value = '';
    addText.value = '';
-    });
+    ;
   
-    const commentsArray = [
-  { id: 0,
-    text: "Это будет первый комментарий на этой странице",
-    likeCount: 3,
-    isLiked: false
-   },
-  { id: 1,
-    text: "Мне нравится как оформлена эта страница",
-    likeCount: 75,
-    isLiked: true
-   }
-];
-  const container = document.getElementById("comments-container");
+    // Очищаем поля ввода для следующего комментария
+  //nameInput.value = '';
+  //textInput.value = '';
+
+  // Вызываем рендер-функцию для обновления интерфейса на сайте
+
+
 
   function renderComments() {
-      // Очищаем контейнер перед повторным рендером
-      container.innerHTML = "";
-
-      commentsArray.forEach((comment) => {
-        // Указываем необходимый класс для иконки лайка в зависимости от значения ключа в массиве
-        const heartClass = comment.isLiked ? "-active-like" : "like-button";
-        const heartSymbol = comment.isLiked ? "❤️" : "🤍";
-   const commentHtml = `
-          <div class="comment">
-            <p>${comment.text}</p>
-            <button class="like-btn" data-id="${comment.id}">
-              <span class="${heartClass}">${heartSymbol}</span>
-              <span class="likes-count">${comment.likesCount}</span>
+      
+      const container = document.getElementById("comments");
+     
+      const commentsHtml = comments.map((comment, index) => { 
+        return `<div class="comment">
+        <h4 class="comment-header">${comment.name}</h4>
+        <p class="comment-text">${comment.text}</p>
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">${comment.likesCount}</span>
+            <!-- Кнопка лайка вызывает глобальную функцию по индексу -->
+            <button class="like-button ${comment.isLiked ? '-active-like' : ''}" onclick="handleLikeClick(${index})">
+              ${comment.isLiked ? '❤️' : '🤍'}
             </button>
           </div>
-        `;
-        container.insertAdjacentHTML("beforeend", commentHtml);
-      });
-    }
+        </div>
+      </div>
+    `;
+      })
+      .join('');
+
+      addComments.innerHTML = commentsHtml;
+      
     container.addEventListener("click", (event) => {
       // Метод closest находит ближайшую кнопку лайка, даже если кликнули на иконку или цифру внутри неё
       const button = event.target.closest(".like-button");
@@ -177,13 +212,7 @@
 
     // Первоначальный вызов функции рендера при загрузке страницы
     renderComments();
-
-/*
-   const updateComments = comments.map(comment => ({
-    ...comment, likeCount: 0, isLiked: false 
-   }));
-   console.log(updateComments);*/
-
+  }
     console.log("It works!");
   </script>
     </body>
