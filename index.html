@@ -9,7 +9,7 @@
   <body>
     <div class="container">
       <ul class="comments" id="comments">
-     <li class="comment"> 
+    <!-- <li class="comment"> 
           <div class="comment-header">
             <div>Глеб Фокин</div>
             <div>12.02.22 12:18</div>
@@ -42,7 +42,7 @@
               <button class="like-button -active-like"></button>
             </div>
           </div>
-        </li>
+        </li>-->
       </ul>
       <div class="add-form">
         <input
@@ -65,22 +65,27 @@
     "use strict";
     // Код писать здесь
   const comments = [
-  { name: "Глеб Фокин",
+  {
+    id: 1,
+    name: "Глеб Фокин",
     text: "Это будет первый комментарий на этой странице",
     likesCount: 3,
-    isLiked: false
+    isLiked: true,
+    data: new Date().toLocaleString()
    },
-  { name: " Варвара Н.",
+  { id: 2,
+    name: " Варвара Н.",
     text: "Мне нравится как оформлена эта страница",
     likesCount: 75,
-    isLiked: true
+    isLiked: true,
+    data: new Date().toLocaleString()
    }
 ];
-
     const addName = document.getElementById('add-form-name');
     const addText = document.getElementById('add-form-text');
     const buttonForm = document.getElementById('add-form-button');
     const addComments = document.getElementById('comments');
+renderComments()
 
     addName.addEventListener('input', (event) =>  {
       console.log('Изменить имя:', event.target.value );
@@ -88,16 +93,6 @@
     addText.addEventListener('input', (event) =>  {
       console.log('Изменить комментарии:', event.target.value );
     });
-/* 
-// Добавляем созданный объект в массив комментариев
-  const addNewComment1 = comments.push(addNewComment);
-  //новый комментарий в конец нового контейнера
-    addComments.innerHTML = addComments.innerHTML + addNewComment1;
-   //addComments.insertAdjacentHTML('beforeend', newComments);
-   addName.value = '';
-   addText.value = '';
-    ;
-  */
 
     buttonForm.addEventListener('click', () => {
       const nameValue = addName.value.trim();
@@ -117,7 +112,7 @@
     const currentDateTime = `${currentDate} ${currentTime}`;
 
     //сoздание шаблонной строки
-    const newComments = `
+    /*const newComments = `
     <div class="comment">
       <h4 class="comment-header">${nameValue}<span>           ${currentDateTime}</span></h4>
       <p class="comment-text">${textValue}</p>
@@ -126,62 +121,53 @@
       <div class="likes-counter">0</div>
       <button class="like-button -active-like"></button></div>
     </div> 
-    </div> `
-  
-    //новый комментарий в конец контейнера
-    addComments.innerHTML = addComments.innerHTML + newComments;
-    addName.value = '';
-    addText.value = '';
-});
-  
+    </div> `*/
     const addNewComment = {
+    id: Date.now(),  
     name: addName.value,
     text: addText.value,
     likesCount: 0,      // Начальное количество лайков
-    isLiked: false      // Изначально лайк не поставлен
+    isLiked: false ,     // Изначально лайк не поставлен
+    data: currentDateTime
   };
-
   // Добавляем созданный объект в массив комментариев
   const addNewComment1 = comments.push(addNewComment);
-  //новый комментарий в конец нового контейнера
-    addComments.innerHTML = addComments.innerHTML + addNewComment1;
-   //addComments.insertAdjacentHTML('beforeend', newComments);
-   addName.value = '';
-   addText.value = '';
-    ;
+    addName.value = '';
+    addText.value = '';
+    renderComments()
+});
   
-    // Очищаем поля ввода для следующего комментария
-  //nameInput.value = '';
-  //textInput.value = '';
+    
 
-  // Вызываем рендер-функцию для обновления интерфейса на сайте
-
-
-
+  
   function renderComments() {
       
       const container = document.getElementById("comments");
      
       const commentsHtml = comments.map((comment, index) => { 
-        return `<div class="comment">
-        <h4 class="comment-header">${comment.name}</h4>
+        return `<li class="comment">
+        <div class="comment-header">
+          <div>${comment.name}</div>
+          <div>${comment.data}</div>
+          </div>
+
         <p class="comment-text">${comment.text}</p>
         <div class="comment-footer">
           <div class="likes">
             <span class="likes-counter">${comment.likesCount}</span>
             <!-- Кнопка лайка вызывает глобальную функцию по индексу -->
-            <button class="like-button ${comment.isLiked ? '-active-like' : ''}" onclick="handleLikeClick(${index})">
+            <button class="like-button ${comment.isLiked ? '-active-like' : ''}" data-id = "${comment.id}">
               ${comment.isLiked ? '❤️' : '🤍'}
             </button>
           </div>
         </div>
-      </div>
+      </li>
     `;
       })
       .join('');
 
       addComments.innerHTML = commentsHtml;
-      
+   /* 
     container.addEventListener("click", (event) => {
       // Метод closest находит ближайшую кнопку лайка, даже если кликнули на иконку или цифру внутри неё
       const button = event.target.closest(".like-button");
@@ -193,7 +179,7 @@
       const commentId = parseInt(button.getAttribute("data-id"), 10);
       
       // Находим нужный элемент в массиве данных
-      const targetComment = commentsArray.find(c => c.id === commentId);
+      const targetComment = comments.find(c => c.id === commentId);
       
       if (targetComment) {
         // Меняем значения ключей в массиве 
@@ -209,10 +195,43 @@
         renderComments();
       }
     });
-
+*/
     // Первоначальный вызов функции рендера при загрузке страницы
-    renderComments();
+    //renderComments();
   }
+  function toggleLike() {
+    const container = document.getElementById("comments")
+
+  
+  container.addEventListener("click", (event) => {
+      // Метод closest находит ближайшую кнопку лайка, даже если кликнули на иконку или цифру внутри неё
+      const button = event.target.closest(".like-button");
+      
+      // Если клик был мимо кнопки лайка — игнорируем его
+      if (!button) return;
+
+      // Извлекаем ID комментария из дата-атрибута кнопки
+      const commentId = parseInt(button.getAttribute("data-id"), 10);
+      
+      // Находим нужный элемент в массиве данных
+      const targetComment = comments.find(c => c.id === commentId);
+      
+      if (targetComment) {
+        // Меняем значения ключей в массиве 
+        if (targetComment.isLiked) {
+          targetComment.isLiked = false;
+          targetComment.likesCount--;
+        } else {
+          targetComment.isLiked = true;
+          targetComment.likesCount++;
+        }
+
+        // Заново выполняем рендер всех комментариев на основе обновленного массива
+        renderComments();
+      }
+    });
+  }
+  toggleLike()
     console.log("It works!");
   </script>
     </body>
