@@ -91,7 +91,7 @@
     const addText = document.getElementById('add-form-text');*/
     const buttonForm = document.getElementById('add-form-button');
     const addComments = document.getElementById('comments');
-renderComments()
+//renderComments()
 
     addName.addEventListener('input', (event) =>  {
       console.log('Изменить имя:', event.target.value );
@@ -140,7 +140,7 @@ renderComments()
       const container = document.getElementById("comments");
      
       const commentsHtml = comments.map((comment, index) => { 
-        return `<li class="comment">
+        return `<li class="comment" data-index="${index}">
         <div class="comment-header">
           <div>${comment.name}</div>
           <div>${comment.data}</div>
@@ -162,19 +162,18 @@ renderComments()
       .join('');
 
       addComments.innerHTML = commentsHtml;
-/*
-const commentsElement = document.querySelectorAll(".comment");
+
+      const commentsElement = document.querySelectorAll(".comment");
       for (const commentElement of commentsElement)
       {
-        commentElement.addEventListener("click", () => {
+        commentElement.addEventListener("click", (event) => {
+          if (event.target.closest(".like-button")) return;
           const currentComment = comments[commentElement.dataset.index];
           addText.value = `${currentComment.name}: ${currentComment.text}`;
         })
       };
-      renderComments();
-  
-      */
-    }
+     }
+
   function toggleLike() {
     const container = document.getElementById("comments")
 
@@ -183,9 +182,11 @@ const commentsElement = document.querySelectorAll(".comment");
     event.stopPropagation();
       // Метод closest находит ближайшую кнопку лайка, даже если кликнули на иконку или цифру внутри неё
       const button = event.target.closest(".like-button");
-      
+       
       // Если клик был мимо кнопки лайка — игнорируем его
       if (!button) return;
+     // if (event.target.closest(".like-button")) return;
+     
 
       // Извлекаем ID комментария из дата-атрибута кнопки
       const commentId = parseInt(button.getAttribute("data-id"), 10);
@@ -209,15 +210,7 @@ const commentsElement = document.querySelectorAll(".comment");
     })
   }
     toggleLike()
-
-  const commentsElement = document.querySelectorAll(".comments");
-      for (const commentElement of commentsElement)
-      {
-        commentElement.addEventListener("click", () => {
-          const currentComment = comments[commentElement.dataset.index];
-          addText.value = `${currentComment.addName}: ${currentComment.addText}`;
-        })
-      };
+  
       renderComments();
     
     console.log("It works!");
