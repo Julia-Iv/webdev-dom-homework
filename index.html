@@ -61,7 +61,8 @@
         </div>
       </div>
     </div>
-  <script>
+ <!--
+ <script>
     "use strict";
     // Код писать здесь
     const addName = document.getElementById("add-form-name");
@@ -86,12 +87,10 @@
     isLiked: true,
     data: new Date().toLocaleString()
    }
-];/*
-    const addName = document.getElementById('add-form-name');
-    const addText = document.getElementById('add-form-text');*/
+];  
+
     const buttonForm = document.getElementById('add-form-button');
     const addComments = document.getElementById('comments');
-//renderComments()
 
     addName.addEventListener('input', (event) =>  {
       console.log('Изменить имя:', event.target.value );
@@ -150,7 +149,8 @@
         <div class="comment-footer">
           <div class="likes">
             <span class="likes-counter">${comment.likesCount}</span>
-            <!-- Кнопка лайка вызывает глобальную функцию по индексу -->
+
+             Кнопка лайка вызывает глобальную функцию по индексу 
             <button class="like-button ${comment.isLiked ? '-active-like' : ''}"
             data-id = "${comment.id}">
            </button>
@@ -214,7 +214,8 @@
       renderComments();
     
     console.log("It works!");
-  </script>
+  </script> -->
+  <script type="module" src="index.js"></script>
     </body>
 
 </html>
