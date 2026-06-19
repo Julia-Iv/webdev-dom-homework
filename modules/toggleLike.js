@@ -15,6 +15,7 @@ export  const toggleLike = () => {
 
       // Извлекаем ID комментария из дата-атрибута кнопки
       const commentId = parseInt(button.getAttribute("data-id"), 10);
+    
       
       // Находим нужный элемент в массиве данных
       const targetComment = comments.find(c => c.id === commentId);
