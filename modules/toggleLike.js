@@ -1,7 +1,12 @@
-import { comments } from "./comments";
+import { comments } from "./comments.js";
+import { eventListeners } from "./eventListeners.js";
+import { inputListeners } from "./inputListeners.js";
+import { renderComments } from "./renderComments.js";
+
 export  const toggleLike = () => {
     const container = document.getElementById("comments")
-
+    if (!container) return;
+    container.onclick = null;
   
   container.addEventListener("click", (event) => {
     event.stopPropagation();
@@ -11,7 +16,7 @@ export  const toggleLike = () => {
       // Если клик был мимо кнопки лайка — игнорируем его
       if (!button) return;
      // if (event.target.closest(".like-button")) return;
-     
+     event.stopPropagation();
 
       // Извлекаем ID комментария из дата-атрибута кнопки
       const commentId = parseInt(button.getAttribute("data-id"), 10);
@@ -35,3 +40,4 @@ export  const toggleLike = () => {
       }
     })
   }
+toggleLike()

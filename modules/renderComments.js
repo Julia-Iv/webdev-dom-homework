@@ -1,8 +1,8 @@
 
-import {comments} from "./modules/comments.js";
-import {eventListeners} from "./modules/eventListeners.js";
-import {toggleLike} from "./modules/toggleLike.js";
-import {inputListeners} from "./modules/inputListeners.js";
+import {comments} from "./comments.js";
+import {eventListeners} from "./eventListeners.js";
+import {toggleLike} from "./toggleLike.js";
+import {inputListeners} from "./inputListeners.js";
 
 export  const renderComments = () => {
       
@@ -31,9 +31,12 @@ export  const renderComments = () => {
       })
       .join('');
 
-      addComments.innerHTML = commentsHtml;
+      container.innerHTML = commentsHtml;
+      eventListeners();
 
-      /*const commentsElement = document.querySelectorAll(".comment");
+      const commentsElement = container.querySelectorAll(".comment");
+      const addText = container.querySelectorAll("add-form-text");
+
       for (const commentElement of commentsElement)
       {
         commentElement.addEventListener("click", (event) => {
@@ -41,5 +44,5 @@ export  const renderComments = () => {
           const currentComment = comments[commentElement.dataset.index];
           addText.value = `${currentComment.name}: ${currentComment.text}`;
         })
-      };*/
+      };
      }

@@ -1,0 +1,29 @@
+{
+  "name": "webdev-dom-homework",
+  "version": "1.0.0",
+  "description": "https://glebkaf.github.io/webdev-dom-homework/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Julia-Iv/webdev-dom-homework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Julia-Iv/webdev-dom-homework/issues"
+  },
+  "homepage": "https://github.com/Julia-Iv/webdev-dom-homework#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.5.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
+    "globals": "^17.6.0",
+    "prettier": "^3.8.4"
+  }
+}

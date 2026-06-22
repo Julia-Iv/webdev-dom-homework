@@ -1,10 +1,14 @@
 import { sanitizeHtml } from "./sanitizeHtml.js";
+import { comments } from "./comments.js";
+import { renderComments } from "./renderComments.js";
+
 export const inputListeners = () => {
     const addName = document.getElementById("add-form-name");
     const addText = document.getElementById("add-form-text");
 
     const buttonForm = document.getElementById('add-form-button');
-    const addComments = document.getElementById('comments');
+    //const addComments = document.getElementById('comments');
+    if (!addName || !addText || !buttonForm) return;
 
     addName.addEventListener('input', (event) =>  {
       console.log('Изменить имя:', event.target.value );
@@ -12,6 +16,7 @@ export const inputListeners = () => {
     addText.addEventListener('input', (event) =>  {
       console.log('Изменить комментарии:', event.target.value );
     });
+   buttonForm.onclick = null;
 
     buttonForm.addEventListener('click', () => {
       const nameValue = addName.value.trim();
@@ -38,10 +43,16 @@ export const inputListeners = () => {
     isLiked: false ,     // Изначально лайк не поставлен
     data: currentDateTime
   };
+    comments.push(addNewComment);
+    addName.value = '';
+    addText.value = '';
+
+
+  /*
   // Добавляем созданный объект в массив комментариев
   const addNewComment1 = comments.push(addNewComment);
     addName.value = '';
-    addText.value = '';
+    addText.value = ''; */
     renderComments()
 });
 }
