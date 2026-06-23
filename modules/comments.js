@@ -1,4 +1,5 @@
-export let comments = [
+
+export const comments = [
   {
     id: 1,
     name: "Глеб Фокин",
@@ -15,3 +16,8 @@ export let comments = [
     data: new Date().toLocaleString()
    }
 ];
+
+export const addCommentToState = (newComment) => {
+  comments.push(newComment);
+};
+
