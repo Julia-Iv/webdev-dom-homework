@@ -1,6 +1,6 @@
 
 export let comments = [
-  
+  /*
   { id: 1,
     name: "Глеб Фокин",
     text: "Это будет первый комментарий на этой странице",
@@ -14,7 +14,7 @@ export let comments = [
     likesCount: 75,
     isLiked: true,
     data: new Date().toLocaleString()
-   }
+   }*/
 ];
 
 export const addCommentToState = (newComment) => {
