@@ -1,8 +1,5 @@
 
 import {comments} from "./comments.js";
-//import {eventListeners} from "./eventListeners.js";
-//import {toggleLike} from "./toggleLike.js";
-//import {inputListeners} from "./inputListeners.js";
 const addCommentsContainer = document.getElementById('comments');
 const addTextForm = document.getElementById("add-form-text");
 
