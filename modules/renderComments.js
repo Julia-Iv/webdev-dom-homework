@@ -1,12 +1,11 @@
 
-import {comments} from "./comments.js";
+import { comments } from "./comments.js";
 const addCommentsContainer = document.getElementById('comments');
 const addTextForm = document.getElementById("add-form-text");
 
 export  function renderComments()  {
       
       //const container = document.getElementById("comments");
-     
       const commentsHtml = comments.map((comment, index) => { 
         return `<li class="comment" data-index="${index}">
         <div class="comment-header">
@@ -60,11 +59,11 @@ function initAnswerListeners() {
      
 
       // Извлекаем ID комментария из дата-атрибута кнопки
-      const commentId = parseInt(button.getAttribute("data-id"), 10);
-      
+          const commentId = button.getAttribute("data-id");
+
       // Находим нужный элемент в массиве данных
-      const targetComment = comments.find(c => c.id === commentId);
-      
+          const targetComment = comments.find(c => String(c.id) === String(commentId));
+
       if (targetComment) {
         // Меняем значения ключей в массиве 
         if (targetComment.isLiked) {
@@ -78,5 +77,5 @@ function initAnswerListeners() {
         // Заново выполняем рендер всех комментариев на основе обновленного массива
         renderComments();
       }
-    })
+    });
   }

@@ -4,15 +4,12 @@ import { renderComments, initToggleLikeListener } from "./modules/renderComments
 
 
 initAddCommentForm();
-//initToggleLikeListener();
+initToggleLikeListener();
 //renderComments();
 
 
 fetch('https://wedev-api.sky.pro/api/v1/Julia-Iv/comments')
-.then((response) => {
-    return response.json();
-    
-})
+.then((response) => response.json())
 .then((responseData) => {
       return responseData.comments.map ((comment) => {
         return {
@@ -28,5 +25,5 @@ fetch('https://wedev-api.sky.pro/api/v1/Julia-Iv/comments')
 .then ((appComments) => {
   updateComments(appComments);
   renderComments();
-  initToggleLikeListener();
+  //initToggleLikeListener();
 });
