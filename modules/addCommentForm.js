@@ -1,5 +1,5 @@
 import { sanitizeHtml } from "./sanitizeHtml.js";
-import { addCommentToState } from "./comments.js";
+import { addCommentToState, updateComments } from "./comments.js";
 import { renderComments } from "./renderComments.js";
 
 
@@ -54,11 +54,50 @@ export function initAddCommentForm() {
 
     });
 
+  fetch('https://wedev-api.sky.pro/api/v1/Julia-Iv/comments', {
+    method: "POST",
+    body: JSON.stringify({
+      name: addName.value,
+      text: addText.value,
+    }),
+  })
+ .then ((response) => {
+if (response.status === 400) {
+  throw new Error ( "Имя должно содержать хотя бы 3 символа" )
+}
+return response.json();
+ })
+ .then (() => {
+  return fetch('https://wedev-api.sky.pro/api/v1/Julia-Iv/comments');
+ })
+ .then((response) => response.json())
+ .then((responseData) => {
+  const appComments = responseData.comments.map((comment) => {
+    return {
+              id: comment.id,
+              likesCount: comment.likes,
+              isLiked: comment.isLiked,
+              name: comment.author.name,
+              text: comment.text,
+              data: new Date(comment.date).toLocaleString() 
+          };
+        });
+      updateComments(appComments);
+      renderComments();
+  
     addName.value = '';
     addText.value = '';
 
-    renderComments();
-
+    //renderComments();
+      })
+ .catch((error) => {
+        alert(error.message || "Упал интернет, попробуйте позже");
+      })
+      .finally(() => {
+        // Возвращаем кнопку в исходное состояние при любом исходе
+        buttonForm.disabled = false;
+        buttonForm.textContent = "Написать";
+      });
   });
-
 }
+
