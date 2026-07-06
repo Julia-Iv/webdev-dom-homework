@@ -2,6 +2,8 @@ import { initAddCommentForm } from "./modules/addCommentForm.js";
 import { updateComments } from "./modules/comments.js";
 import { renderComments, initToggleLikeListener } from "./modules/renderComments.js"
 
+document.querySelector('.comments').innerHTML = 
+'Пожалуйста подождите, идёт загрузка комментария'
 
 initAddCommentForm();
 initToggleLikeListener();

@@ -43,6 +43,8 @@ export function initAddCommentForm() {
       return;
 
     }
+document.querySelector('.form-loading').style.display = 'block'
+document.querySelector('.add-form').style.display = 'none'
 
     addCommentToState({
       id: Date.now(),
@@ -72,6 +74,9 @@ return response.json();
  })
  .then((response) => response.json())
  .then((responseData) => {
+  document.querySelector('.form-loading').style.display = 'none'
+document.querySelector('.add-form').style.display = 'flex'
+
   const appComments = responseData.comments.map((comment) => {
     return {
               id: comment.id,
