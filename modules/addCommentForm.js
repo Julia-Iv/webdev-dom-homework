@@ -1,15 +1,11 @@
-import { sanitizeHtml } from "./sanitizeHtml.js";
-import { addCommentToState, updateComments } from "./comments.js";
-import { renderComments } from "./renderComments.js";
+
+import { fetchComments, fetchCommentsPost } from "./api.js";
+import { updateComments } from "./comments.js";
+import { renderComments} from "./renderComments.js"
 
 
 
-const addName = document.getElementById("add-form-name");
-const addText = document.getElementById("add-form-text");
-const buttonForm = document.getElementById("add-form-button");
-
-
-
+/*
 function getCurrentDateTime() {
   const now = new Date();
   const dateOpts = { day: '2-digit', month: '2-digit', year: '2-digit' };
@@ -18,11 +14,20 @@ function getCurrentDateTime() {
   const t = now.toLocaleTimeString('ru-RU', timeOpts);
   return `${d} ${t}`;
 
-}
+}*/
 
 
 
-export function initAddCommentForm() {
+export const initAddCommentForm = () => {
+const addName = document.getElementById("add-form-name");
+const addText = document.getElementById("add-form-text");
+const buttonForm = document.getElementById("add-form-button");
+const formLoading = document.querySelector('.form-loading');
+const addForm = document.querySelector('.add-form');
+
+
+  if (!addName || !addText || !buttonForm) return;
+
 
   addName.addEventListener('input', (event) => {
     console.log('Изменить имя:', event.target.value);
@@ -43,9 +48,36 @@ export function initAddCommentForm() {
       return;
 
     }
-document.querySelector('.form-loading').style.display = 'block'
-document.querySelector('.add-form').style.display = 'none'
 
+    if (formLoading) formLoading.style.display = 'block';
+    if (addForm) addForm.style.display = 'none';
+    buttonForm.disabled = true;
+    buttonForm.textContent = "Элемент добавляется...";
+
+fetchCommentsPost(addName.value,addText.value)
+      .then(() => {
+        return fetchComments(); 
+      })
+      .then((appComments) => {
+        updateComments(appComments);
+        renderComments();
+
+        addName.value = '';
+        addText.value = '';
+      })
+      .catch((error) => {
+        alert (error.message);
+      })
+      .finally(() => {
+        // Возвращаем интерфейс в исходное состояние при любом исходе
+        if (formLoading) formLoading.style.display = 'none';
+        if (addForm) addForm.style.display = 'flex';
+        buttonForm.disabled = false;
+        buttonForm.textContent = "Написать";
+      });
+  });
+};
+/*
     addCommentToState({
       id: Date.now(),
       name: sanitizeHtml(nameValue),
@@ -54,55 +86,6 @@ document.querySelector('.add-form').style.display = 'none'
       isLiked: false,
       data: getCurrentDateTime()
 
-    });
-
-  fetch('https://wedev-api.sky.pro/api/v1/Julia-Iv/comments', {
-    method: "POST",
-    body: JSON.stringify({
-      name: addName.value,
-      text: addText.value,
-    }),
-  })
- .then ((response) => {
-if (response.status === 400) {
-  throw new Error ( "Имя должно содержать хотя бы 3 символа" )
-}
-return response.json();
- })
- .then (() => {
-  return fetch('https://wedev-api.sky.pro/api/v1/Julia-Iv/comments');
- })
- .then((response) => response.json())
- .then((responseData) => {
-  document.querySelector('.form-loading').style.display = 'none'
-document.querySelector('.add-form').style.display = 'flex'
-
-  const appComments = responseData.comments.map((comment) => {
-    return {
-              id: comment.id,
-              likesCount: comment.likes,
-              isLiked: comment.isLiked,
-              name: comment.author.name,
-              text: comment.text,
-              data: new Date(comment.date).toLocaleString() 
-          };
-        });
-      updateComments(appComments);
-      renderComments();
+    });*/
   
-    addName.value = '';
-    addText.value = '';
-
-    //renderComments();
-      })
- .catch((error) => {
-        alert(error.message || "Упал интернет, попробуйте позже");
-      })
-      .finally(() => {
-        // Возвращаем кнопку в исходное состояние при любом исходе
-        buttonForm.disabled = false;
-        buttonForm.textContent = "Написать";
-      });
-  });
-}
 

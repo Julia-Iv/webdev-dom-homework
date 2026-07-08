@@ -1,11 +1,11 @@
 
 import { comments } from "./comments.js";
-const addCommentsContainer = document.getElementById('comments');
-const addTextForm = document.getElementById("add-form-text");
 
 export  function renderComments()  {
+      const addCommentsContainer = document.getElementById('comments');
       
-      //const container = document.getElementById("comments");
+      if(!addCommentsContainer) return;
+      
       const commentsHtml = comments.map((comment, index) => { 
         return `<li class="comment" data-index="${index}">
         <div class="comment-header">
@@ -30,26 +30,36 @@ export  function renderComments()  {
       addCommentsContainer.innerHTML = commentsHtml;
       initAnswerListeners();
 
-
+    }
 function initAnswerListeners() {
       const commentsElement = document.querySelectorAll(".comment");
-      //const addText = container.querySelectorAll("add-form-text");
+      const addTextForm = document.getElementById("add-form-text");
+
+      if(!addTextForm) return;
 
       for (const commentElement of commentsElement)
       {
         commentElement.addEventListener("click", (event) => {
           if (event.target.closest(".like-button")) return;
           
-          const currentComment = comments[commentElement.dataset.index];
+          const index = commentElement.dataset.index;
+          const currentComment = comments[index];
+
+          if (currentComment) {
           addTextForm.value = `${currentComment.name}: ${currentComment.text}`;
+          addTextForm.focus();
+        }
         });
       };
      }
-    }
+    
 
     export function initToggleLikeListener() {
+     const addCommentsContainer = document.getElementById('comments');
+     if(!addCommentsContainer) return;
+
     addCommentsContainer.addEventListener("click", (event) => {
-    event.stopPropagation();
+    //event.stopPropagation();
       // Метод closest находит ближайшую кнопку лайка, даже если кликнули на иконку или цифру внутри неё
       const button = event.target.closest(".like-button");
        
