@@ -2,7 +2,15 @@
 import { fetchComments, fetchCommentsPost } from "./api.js";
 import { updateComments } from "./comments.js";
 import { renderComments} from "./renderComments.js"
+  
+const sanitizeInput = (htmlString) => {
+  return String(htmlString || '')
 
+    .replace("&", "&amp;")
+    .replace("<", "&lt;")
+    .replace(">", "&gt;")
+    .replace('"', "&quot;");
+};
 
 
 /*
@@ -28,7 +36,7 @@ const addForm = document.querySelector('.add-form');
 
   if (!addName || !addText || !buttonForm) return;
 
-
+/*
   addName.addEventListener('input', (event) => {
     console.log('Изменить имя:', event.target.value);
 
@@ -38,7 +46,7 @@ const addForm = document.querySelector('.add-form');
     console.log('Изменить комментарии:', event.target.value);
 
   });
-
+*/
   buttonForm.addEventListener('click', () => {
     const nameValue = addName.value.trim();
     const textValue = addText.value.trim();
@@ -49,12 +57,15 @@ const addForm = document.querySelector('.add-form');
 
     }
 
+    const safeName = sanitizeInput(nameValue);
+    const safeText = sanitizeInput(textValue);
+
     if (formLoading) formLoading.style.display = 'block';
     if (addForm) addForm.style.display = 'none';
     buttonForm.disabled = true;
     buttonForm.textContent = "Элемент добавляется...";
 
-fetchCommentsPost(addName.value,addText.value)
+fetchCommentsPost(safeName, safeText)
       .then(() => {
         return fetchComments(); 
       })
@@ -66,7 +77,16 @@ fetchCommentsPost(addName.value,addText.value)
         addText.value = '';
       })
       .catch((error) => {
-        alert (error.message);
+
+        if (error.message === 'Failed to fetch') {
+          alert ('Нет интернета, попробуйте снова')
+        }
+        else if (error.message === 'Ошибка сервера') {
+          alert ('Ошибка сервера')
+        }
+        else if(error.message === 'Неверный запрос') {
+          alert ('Имя и комментарии должны быть не короче 3х символов')
+        } 
       })
       .finally(() => {
         // Возвращаем интерфейс в исходное состояние при любом исходе
