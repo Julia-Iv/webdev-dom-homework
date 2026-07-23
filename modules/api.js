@@ -1,5 +1,19 @@
+const authHost = "https://wedev-api.sky.pro/api/user"
+
+export let token = ""
+
+export const setToken = (newToken) => {
+  token = newToken
+}
+
+export let name = ''
+export const setName = (newName) => {
+  name = newName
+}
+
 export const fetchComments = () => {
-    return fetch('https://wedev-api.sky.pro/api/v1/Julia-Iv/comments')
+   return fetch ('https://wedev-api.sky.pro/api/v2/:Julia-Iv')
+    //return fetch('https://wedev-api.sky.pro/api/v1/Julia-Iv/comments')
 
     .then((response) => {
       if(!response.ok) throw new Error ("Ошибка сервера"); 
@@ -20,9 +34,12 @@ export const fetchComments = () => {
  
 export const fetchCommentsPost = (name,text) => {
 
-        return fetch('https://wedev-api.sky.pro/api/v1/Julia-Iv/comments', 
+        return fetch('https://wedev-api.sky.pro/api/v2/:Julia-Iv', 
              {
                 method: "POST",
+                headears: {
+                  Authorization: `Bearer ${token}`,
+                },
                 body: JSON.stringify({ name, text,}),
                   
               })
@@ -41,3 +58,23 @@ export const fetchCommentsPost = (name,text) => {
              
             });
         }
+export const login = (login, password) => {
+  return fetch(authHost + '/login', {
+         method: 'POST',
+         body: JSON.stringify({ 
+          login: login,
+          password: password
+         })
+  }) 
+}
+
+export const registration = (name, login, password) => {
+  return fetch(authHost, {
+    method: 'POST',
+         body: JSON.stringify({ 
+          name: name,
+          login: login,
+          password: password
+         })
+  })
+}

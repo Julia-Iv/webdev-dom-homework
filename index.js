@@ -9,7 +9,7 @@ commentsElement.innerHTML =
 '<li>Пожалуйста подождите, идёт загрузка комментария</li>';
 }
 
-fetchComments()
+fetchComments() 
 .then((appComments) => {
   updateComments(appComments);
   renderComments();

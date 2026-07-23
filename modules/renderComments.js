@@ -1,10 +1,13 @@
 
 import { comments } from "./comments.js";
+import { renderLogin } from ".renderLogin.js"
+import { token } from "./api.js"
 
 export  function renderComments()  {
-      const addCommentsContainer = document.getElementById('comments');
-      
-      if(!addCommentsContainer) return;
+      //const addCommentsContainer = document.getElementById('comments');
+      const container = document.querySelector('.container')
+
+      //if(!addCommentsContainer) return;
       
       const commentsHtml = comments.map((comment, index) => { 
         return `<li class="comment" data-index="${index}">
@@ -27,9 +30,51 @@ export  function renderComments()  {
       })
       .join('');
 
-      addCommentsContainer.innerHTML = commentsHtml;
-      initAnswerListeners();
+      const addCommentsHtml = `
+      <div class="add-form">
+        <input
+          type="text" id="add-form-name"
+          class="add-form-name"
+          placeholder="Введите ваше имя"
+          readonly
+          value="${name}"
+          id="name-input"
 
+        />
+        <textarea
+          type="textarea" id="add-form-text"
+          class="add-form-text"
+          placeholder="Введите ваш коментарий"
+          rows="4"
+          id="text-input"
+        ></textarea>
+        <div class="add-form-row">
+          <button id="add-form-button" class="add-form-button">Написать</button>
+        </div>
+      </div>
+      <div class = "form-loading" style = "display: none; margin-top: 20px;">
+        Комментарий добавляется
+      </div>`
+
+      const linkToLoginText = `<p>чтобы отправить комментарий, <span
+      class="link-login">войдите</span></p>`
+
+      const baseHtml = `<ul class="comments">${commentsHtml}</ul>
+      ${token ? addCommentsHtml : linkToLoginText}
+}`
+    
+      container.innerHTML = baseHtml
+
+      if (token) {
+      initToggleLikeListener()
+      initAnswerListeners()
+    } else {
+     document.querySelector('.linl-login').addEventListener('click',
+      () => {
+        renderLogin()
+      }
+     )
+       }
     }
 function initAnswerListeners() {
       const commentsElement = document.querySelectorAll(".comment");
