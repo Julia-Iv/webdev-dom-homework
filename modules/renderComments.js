@@ -101,7 +101,7 @@ function initAnswerListeners() {
     
 
     export function initToggleLikeListener() {
-     const commentsList = document.getElementById('.comments');
+     const commentsList = document.querySelector('.comments');
      if(!commentsList) return;
 
     commentsList.addEventListener("click", (event) => {
