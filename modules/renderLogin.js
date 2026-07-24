@@ -1,6 +1,8 @@
-import { fetchComments, login } from "./api.js"
+import { getAndRenderComments } from "../index.js"
+import { login } from "./api.js"
 import { setToken } from "./api.js"
 import { setName } from "./api.js"
+import { renderRegistration } from "./renderRegistration.js"
 
 export const renderLogin = () => {
     const container = document.querySelector('.container')
@@ -18,7 +20,7 @@ export const renderLogin = () => {
      />
 
      <input 
-     type="text"
+     type="password"
      class="add-form-name"
      placeholder="Введите пароль"
      id="password"
@@ -26,28 +28,34 @@ export const renderLogin = () => {
      ></input>
      <fieldset class="add-form-registry">
      <button class="add-form-button-main button-main"
-      type="submit >Зарегистрироваться</button>
-      <ul class="add-form-button-link entry">
-      Войти
-      </ul>
+      type="submit">Войти</button>
+      <span class="add-form-button-link registry">
+      Зарегистрироваться
+      </span>
       </fieldset>
     </section>
     `
     container.innerHTML = loginHtml
+
+    document.querySelector(".registry").addEventListener("click", () =>{
+        renderRegistration()
+    })
     
     const loginEl = document.querySelector('#login')
     const passwordEl = document.querySelector('#password')
-    const submitButtonEl = document.querySelector('#button-main')
+    const submitButtonEl = document.querySelector('.button-main')
 
     submitButtonEl.addEventListener("click", () => {
-        login(loginEl.ariaValueMax, passwordEl.value)
+        login(loginEl.value, passwordEl.value)
         .then((response) => {
+            if (!response.ok) {
+                throw new Error("Ошибка входа")
+            }
             return response.json()
         })
         .then((data) => {
             setToken(data.user.token)
             setName(data.user.name)
-            fetchComments()
-        })
+            getAndRenderComments()        })
     })
 }

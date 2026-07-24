@@ -12,7 +12,7 @@ export const setName = (newName) => {
 }
 
 export const fetchComments = () => {
-   return fetch ('https://wedev-api.sky.pro/api/v2/:Julia-Iv')
+   return fetch ('https://wedev-api.sky.pro/api/v2/Julia-Iv/comments')
     //return fetch('https://wedev-api.sky.pro/api/v1/Julia-Iv/comments')
 
     .then((response) => {
@@ -32,15 +32,15 @@ export const fetchComments = () => {
 };
           
  
-export const fetchCommentsPost = (name,text) => {
+export const fetchCommentsPost = (text) => {
 
-        return fetch('https://wedev-api.sky.pro/api/v2/:Julia-Iv', 
+        return fetch('https://wedev-api.sky.pro/api/v2/Julia-Iv/comments', 
              {
                 method: "POST",
-                headears: {
+                headers: {
                   Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ name, text,}),
+                body: JSON.stringify({ text}),
                   
               })
              .then ((response) => {

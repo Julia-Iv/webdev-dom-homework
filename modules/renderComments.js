@@ -1,13 +1,13 @@
 
 import { comments } from "./comments.js";
-import { renderLogin } from ".renderLogin.js"
-import { token } from "./api.js"
+import { renderLogin } from "./renderLogin.js"
+import { token,name } from "./api.js"
 
 export  function renderComments()  {
       //const addCommentsContainer = document.getElementById('comments');
       const container = document.querySelector('.container')
 
-      //if(!addCommentsContainer) return;
+      if(!container) return;
       
       const commentsHtml = comments.map((comment, index) => { 
         return `<li class="comment" data-index="${index}">
@@ -38,7 +38,7 @@ export  function renderComments()  {
           placeholder="Введите ваше имя"
           readonly
           value="${name}"
-          id="name-input"
+          //id="name-input"
 
         />
         <textarea
@@ -46,7 +46,7 @@ export  function renderComments()  {
           class="add-form-text"
           placeholder="Введите ваш коментарий"
           rows="4"
-          id="text-input"
+          //id="text-input"
         ></textarea>
         <div class="add-form-row">
           <button id="add-form-button" class="add-form-button">Написать</button>
@@ -54,28 +54,29 @@ export  function renderComments()  {
       </div>
       <div class = "form-loading" style = "display: none; margin-top: 20px;">
         Комментарий добавляется
-      </div>`
+      </div>`;
 
       const linkToLoginText = `<p>чтобы отправить комментарий, <span
       class="link-login">войдите</span></p>`
 
       const baseHtml = `<ul class="comments">${commentsHtml}</ul>
-      ${token ? addCommentsHtml : linkToLoginText}
-}`
+      ${token ? addCommentsHtml : linkToLoginText}`
     
-      container.innerHTML = baseHtml
+      container.innerHTML = baseHtml;
+
+      initToggleLikeListener();
 
       if (token) {
-      initToggleLikeListener()
       initAnswerListeners()
     } else {
-     document.querySelector('.linl-login').addEventListener('click',
-      () => {
+     const loginLink = document.querySelector('.link-login')
+     if (loginLink) {
+     loginLink.addEventListener('click', () => {
         renderLogin()
-      }
-     )
+      });
        }
     }
+  }
 function initAnswerListeners() {
       const commentsElement = document.querySelectorAll(".comment");
       const addTextForm = document.getElementById("add-form-text");
@@ -100,10 +101,10 @@ function initAnswerListeners() {
     
 
     export function initToggleLikeListener() {
-     const addCommentsContainer = document.getElementById('comments');
-     if(!addCommentsContainer) return;
+     const commentsList = document.getElementById('.comments');
+     if(!commentsList) return;
 
-    addCommentsContainer.addEventListener("click", (event) => {
+    commentsList.addEventListener("click", (event) => {
     //event.stopPropagation();
       // Метод closest находит ближайшую кнопку лайка, даже если кликнули на иконку или цифру внутри неё
       const button = event.target.closest(".like-button");

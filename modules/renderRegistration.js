@@ -1,4 +1,5 @@
-import { fetchComments, registration } from "./api.js"
+import { getAndRenderComments } from "../index.js"
+import { registration } from "./api.js"
 import { setToken } from "./api.js"
 import { setName } from "./api.js"
 import { renderLogin } from "./renderLogin.js"
@@ -27,7 +28,7 @@ export const renderRegistration = () => {
      />
 
      <input 
-     type="text"
+     type="password"
      class="add-form-name"
      placeholder="Введите пароль"
      id="password"
@@ -35,10 +36,10 @@ export const renderRegistration = () => {
      ></input>
      <fieldset class="add-form-registry">
      <button class="add-form-button-main button-main"
-      type="submit >зарегистрироваться</button>
-      <ul class="add-form-button-link entry">
+      type="submit">Зарегистрироваться</button>
+      <span class="add-form-button-link entry">
       Войти
-      </ul>
+      </span>
       </fieldset>
     </section>
     `
@@ -51,17 +52,23 @@ export const renderRegistration = () => {
     const nameEl = document.querySelector('#name')
     const loginEl = document.querySelector('#login')
     const passwordEl = document.querySelector('#password')
-    const submitButtonEl = document.querySelector('#button-main')
+    const submitButtonEl = document.querySelector('.button-main')
 
     submitButtonEl.addEventListener("click", () => {
         registration(nameEl.value, loginEl.value, passwordEl.value)
         .then((response) => {
+            if (response.status === 400) {
+                throw new Error("Пользователь с таким логином уже существует");
+            }
+            if (!response.ok) {
+                throw new Error("Ошибка сервера при регистрации");
+            }
             return response.json()
         })
         .then((data) => {
             setToken(data.user.token)
             setName(data.user.name)
-            fetchComments()
-        })
+            getAndRenderComments()    
+            })
     })
 }

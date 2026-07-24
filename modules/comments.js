@@ -1,5 +1,5 @@
 
-export let comments = [
+export const comments = [
   /*
   { id: 1,
     name: "Глеб Фокин",
@@ -22,7 +22,8 @@ export const addCommentToState = (newComment) => {
 };
 
 export const updateComments = (newComments) => {
- comments = newComments;
-  //comments.length = 0;
-  //comments.push(...newComments);
+    comments.length = 0;
+    comments.push(...newComments);
 }
+ //comments = newComments;
+

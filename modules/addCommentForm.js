@@ -1,8 +1,9 @@
 
-import { fetchComments, fetchCommentsPost } from "./api.js";
+import { fetchComments, fetchCommentsPost, name } from "./api.js";
 import { updateComments } from "./comments.js";
 import { renderComments} from "./renderComments.js"
-  
+import { initToggleLikeListener } from "./renderComments.js";
+
 const sanitizeInput = (htmlString) => {
   return String(htmlString || '')
 
@@ -27,14 +28,18 @@ function getCurrentDateTime() {
 
 
 export const initAddCommentForm = () => {
-const addName = document.getElementById("add-form-name");
+//const addName = document.getElementById("add-form-name");
 const addText = document.getElementById("add-form-text");
 const buttonForm = document.getElementById("add-form-button");
 const formLoading = document.querySelector('.form-loading');
 const addForm = document.querySelector('.add-form');
 
-
-  if (!addName || !addText || !buttonForm) return;
+const addName = document.getElementById("add-form-name");
+if (addName) {
+  addName.value = name;
+  addName.disabled = true;
+}
+  if (!addText || !buttonForm) return;
 
 /*
   addName.addEventListener('input', (event) => {
@@ -48,16 +53,16 @@ const addForm = document.querySelector('.add-form');
   });
 */
   buttonForm.addEventListener('click', () => {
-    const nameValue = addName.value.trim();
+   // const nameValue = addName.value.trim();
     const textValue = addText.value.trim();
 
-    if (nameValue === '' || textValue === '') {
+    if (textValue === '') {
       alert('Пожалуйста, заполните поля!');
       return;
 
     }
 
-    const safeName = sanitizeInput(nameValue);
+    //const safeName = sanitizeInput(nameValue);
     const safeText = sanitizeInput(textValue);
 
     if (formLoading) formLoading.style.display = 'block';
@@ -65,15 +70,16 @@ const addForm = document.querySelector('.add-form');
     buttonForm.disabled = true;
     buttonForm.textContent = "Элемент добавляется...";
 
-fetchCommentsPost(safeName, safeText)
+fetchCommentsPost(safeText)
       .then(() => {
         return fetchComments(); 
       })
       .then((appComments) => {
         updateComments(appComments);
         renderComments();
+        initToggleLikeListener();
 
-        addName.value = '';
+        //addName.value = '';
         addText.value = '';
       })
       .catch((error) => {

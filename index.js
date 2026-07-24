@@ -3,6 +3,7 @@ import { initToggleLikeListener, renderComments} from "./modules/renderComments.
 import { fetchComments } from "./modules/api.js";
 import { updateComments } from "./modules/comments.js";
 
+export const getAndRenderComments = () => {
 const commentsElement = document.getElementById('comments');
 if (commentsElement) {
 commentsElement.innerHTML = 
@@ -15,4 +16,9 @@ fetchComments()
   renderComments();
   initToggleLikeListener();
   initAddCommentForm();
+})
+.catch((error) => {
+  console.log("Ошибка при обновлении комментариев:", error);
 });
+};
+getAndRenderComments();
