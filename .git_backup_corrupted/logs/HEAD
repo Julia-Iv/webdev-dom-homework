@@ -1,0 +1,11 @@
+0000000000000000000000000000000000000000 77e9b7397aa396598a1d0fcd86d31cf309daa1ce Julia <bogatayadomo@gmail.com> 1778871340 +0300	clone: from https://github.com/Julia-Iv/webdev-dom-homework.git
+77e9b7397aa396598a1d0fcd86d31cf309daa1ce 77e9b7397aa396598a1d0fcd86d31cf309daa1ce Julia <bogatayadomo@gmail.com> 1778873753 +0300	checkout: moving from main to JS1
+77e9b7397aa396598a1d0fcd86d31cf309daa1ce 23ec3613b670ef4362874088edbefa073d028cdd Julia <bogatayadomo@gmail.com> 1778874927 +0300	commit: обработчик событий
+23ec3613b670ef4362874088edbefa073d028cdd b3e066a44c69c2f8d7c71afc4f755d085ff92ba5 Julia <bogatayadomo@gmail.com> 1779135483 +0300	commit: обработчик событий1
+b3e066a44c69c2f8d7c71afc4f755d085ff92ba5 574d77412d4690e5cf14a38faba7699dc9b2d3a0 Julia <bogatayadomo@gmail.com> 1780305034 +0300	commit: dom2
+574d77412d4690e5cf14a38faba7699dc9b2d3a0 04b6343fe0f0ddb0158077aaffcc1c32149d86ac Julia <bogatayadomo@gmail.com> 1780347673 +0300	commit: dom2-1
+04b6343fe0f0ddb0158077aaffcc1c32149d86ac ad7fc504fc3ef07b708b38357ce2c1b94e04c44c Julia <bogatayadomo@gmail.com> 1780489618 +0300	commit: dom2-2
+ad7fc504fc3ef07b708b38357ce2c1b94e04c44c b74b14d10b82e8224674568caefced2ab067d9ac Julia <bogatayadomo@gmail.com> 1781558414 +0300	commit: dom3-1
+b74b14d10b82e8224674568caefced2ab067d9ac bfba9eaf6906289c6fe8bf243630380016f9949f Julia <bogatayadomo@gmail.com> 1781640166 +0300	commit: dom3-2
+bfba9eaf6906289c6fe8bf243630380016f9949f 2ec85409bc7c26c7598a137321cbe901f9d65756 Julia <bogatayadomo@gmail.com> 1781865797 +0300	commit: dom4-1
+2ec85409bc7c26c7598a137321cbe901f9d65756 b10de73289ec4accbb7c3b1e52523d13403ca382 Julia <bogatayadomo@gmail.com> 1781872795 +0300	commit: dom4-2

@@ -8,8 +8,10 @@
 
   <body>
     <div class="container">
-      <ul class="comments">
-        <li class="comment">
+      <!--
+
+      <ul class="comments" id="comments">
+    <li class="comment"> 
           <div class="comment-header">
             <div>Глеб Фокин</div>
             <div>12.02.22 12:18</div>
@@ -26,10 +28,10 @@
             </div>
           </div>
         </li>
-        <li class="comment">
+        <li class="comment"> 
           <div class="comment-header">
             <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
+            <div class="data">13.02.22 19:22</div>
           </div>
           <div class="comment-body">
             <div class="comment-text">
@@ -46,26 +48,179 @@
       </ul>
       <div class="add-form">
         <input
-          type="text"
+          type="text" id="add-form-name"
           class="add-form-name"
           placeholder="Введите ваше имя"
         />
         <textarea
-          type="textarea"
+          type="textarea" id="add-form-text"
           class="add-form-text"
           placeholder="Введите ваш коментарий"
           rows="4"
         ></textarea>
         <div class="add-form-row">
-          <button class="add-form-button">Написать</button>
+          <button id="add-form-button" class="add-form-button">Написать</button>
         </div>
       </div>
+      <div class = "form-loading" style = "display: none; margin-top: 20px;">
+        Комментарий добавляется
+      </div>-->
     </div>
-  </body>
-
-  <script>
+ <!--
+ <script>
     "use strict";
     // Код писать здесь
+    const addName = document.getElementById("add-form-name");
+    const addText = document.getElementById("add-form-text");
+
+    const sanitizeHtml = (value)  => {
+      return value.replaceAll("<","&lt;").replaceAll(">","&gt;")
+    }
+  const comments = [
+  {
+    id: 1,
+    name: "Глеб Фокин",
+    text: "Это будет первый комментарий на этой странице",
+    likesCount: 3,
+    isLiked: true,
+    data: new Date().toLocaleString()
+   },
+  { id: 2,
+    name: " Варвара Н.",
+    text: "Мне нравится как оформлена эта страница",
+    likesCount: 75,
+    isLiked: true,
+    data: new Date().toLocaleString()
+   }
+];  
+
+    const buttonForm = document.getElementById('add-form-button');
+    const addComments = document.getElementById('comments');
+
+    addName.addEventListener('input', (event) =>  {
+      console.log('Изменить имя:', event.target.value );
+    });
+    addText.addEventListener('input', (event) =>  {
+      console.log('Изменить комментарии:', event.target.value );
+    });
+
+    buttonForm.addEventListener('click', () => {
+      const nameValue = addName.value.trim();
+      const textValue = addText.value.trim();
+      if (nameValue === '' || textValue === '') {
+        alert(' Пожалуйста, заполните поля!');
+        return;
+      }
+      console.log("click");
+
+    //формирование даты и времени
+    const now =new Date();
+    const dateOptions = { day: '2-digit', month: '2-digit', year: '2-digit' };
+    const timeOptions = { hour: '2-digit', minute: '2-digit' };
+    const currentDate = now.toLocaleDateString('ru-RU', dateOptions);
+    const currentTime = now.toLocaleTimeString('ru-RU', timeOptions);
+    const currentDateTime = `${currentDate} ${currentTime}`;
+
+    const addNewComment = {
+    id: Date.now(),  
+    name: sanitizeHtml(addName.value),
+    text: sanitizeHtml(addText.value),
+    likesCount: 0,      // Начальное количество лайков
+    isLiked: false ,     // Изначально лайк не поставлен
+    data: currentDateTime
+  };
+  // Добавляем созданный объект в массив комментариев
+  const addNewComment1 = comments.push(addNewComment);
+    addName.value = '';
+    addText.value = '';
+    renderComments()
+});
+  
+    
+
+  
+  function renderComments() {
+      
+      const container = document.getElementById("comments");
+     
+      const commentsHtml = comments.map((comment, index) => { 
+        return `<li class="comment" data-index="${index}">
+        <div class="comment-header">
+          <div>${comment.name}</div>
+          <div>${comment.data}</div>
+          </div>
+
+        <p class="comment-text">${comment.text}</p>
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">${comment.likesCount}</span>
+
+             Кнопка лайка вызывает глобальную функцию по индексу 
+            <button class="like-button ${comment.isLiked ? '-active-like' : ''}"
+            data-id = "${comment.id}">
+           </button>
+          </div>
+        </div>
+      </li>
+    `;
+      })
+      .join('');
+
+      addComments.innerHTML = commentsHtml;
+
+      const commentsElement = document.querySelectorAll(".comment");
+      for (const commentElement of commentsElement)
+      {
+        commentElement.addEventListener("click", (event) => {
+          if (event.target.closest(".like-button")) return;
+          const currentComment = comments[commentElement.dataset.index];
+          addText.value = `${currentComment.name}: ${currentComment.text}`;
+        })
+      };
+     }
+
+  function toggleLike() {
+    const container = document.getElementById("comments")
+
+  
+  container.addEventListener("click", (event) => {
+    event.stopPropagation();
+      // Метод closest находит ближайшую кнопку лайка, даже если кликнули на иконку или цифру внутри неё
+      const button = event.target.closest(".like-button");
+       
+      // Если клик был мимо кнопки лайка — игнорируем его
+      if (!button) return;
+     // if (event.target.closest(".like-button")) return;
+     
+
+      // Извлекаем ID комментария из дата-атрибута кнопки
+      const commentId = parseInt(button.getAttribute("data-id"), 10);
+      
+      // Находим нужный элемент в массиве данных
+      const targetComment = comments.find(c => c.id === commentId);
+      
+      if (targetComment) {
+        // Меняем значения ключей в массиве 
+        if (targetComment.isLiked) {
+          targetComment.isLiked = false;
+          targetComment.likesCount--;
+        } else {
+          targetComment.isLiked = true;
+          targetComment.likesCount++;
+        }
+      
+        // Заново выполняем рендер всех комментариев на основе обновленного массива
+        renderComments();
+      }
+    })
+  }
+    toggleLike()
+  
+      renderComments();
+    
     console.log("It works!");
-  </script>
+  </script> -->
+  <script type="module" src="index.js"></script>
+    </body>
+
 </html>
